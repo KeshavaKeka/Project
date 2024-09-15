@@ -3,7 +3,7 @@ import string
 import pymysql
 
 db = pymysql.connect(
-    host="localhost",
+    host="db",
     user="root",
     password="phunsukwangdoo",
     database="trafficfine"
@@ -62,7 +62,7 @@ for _ in range(500):
     zone_id = random.randint(1, 6)
     vehicle_no = 'KA' + ''.join(random.choices(string.digits, k=2)) + ''.join(random.choices(string.ascii_uppercase, k=2)) + ''.join(random.choices(string.digits, k=4))
 
-    query = f"INSERT INTO rto_vehicle (reg_dt, vehicle_year, vehicle_model, owner_id, vehicle_no,zone_id) VALUES ('{reg_dt}', {vehicle_year}, '{vehicle_model}', {owner_id},'{vehicle_no}',{zone_id})"
+    query = f"INSERT INTO RTO_Vehicle (reg_dt, vehicle_year, vehicle_model, owner_id, vehicle_no,zone_id) VALUES ('{reg_dt}', {vehicle_year}, '{vehicle_model}', {owner_id},'{vehicle_no}',{zone_id})"
     cursor.execute(query)
     aadhaar_id = owner_id
     c_name = generate_indian_name()

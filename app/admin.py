@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # Database configuration
 db_config = {
-    'host': 'localhost',
+    'host': 'db',
     'user': 'root',
     'password': 'phunsukwangdoo',
     'database': 'trafficfine',

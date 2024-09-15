@@ -21,7 +21,7 @@ def login_info():
 
 @app.route('/login',methods=['POST'])
 def login():
-    db = pymysql.connect(host="localhost", user="root", password="phunsukwangdoo", database="trafficfine")
+    db = pymysql.connect(host="db", user="root", password="phunsukwangdoo", database="trafficfine")
     cursor = db.cursor()
     if request.method=='POST':
         user_n=str(request.form['u_name'])
@@ -43,7 +43,7 @@ def login():
 @app.route('/add_data', methods=['POST'])
 def add_data():
     
-    db = pymysql.connect(host="localhost", user="root", password="phunsukwangdoo", database="trafficfine")
+    db = pymysql.connect(host="db", user="root", password="phunsukwangdoo", database="trafficfine")
     cursor = db.cursor()
     if request.method == 'POST':
         # Get data from the form
@@ -93,7 +93,7 @@ def search_violations():
     from io import BytesIO
 
     db = pymysql.connect(
-        host="localhost",
+        host="db",
         user="root",
         password="phunsukwangdoo",
         database="trafficfine",
@@ -123,7 +123,7 @@ def search_violations():
     
 @app.route("/add_payment", methods=['POST'])
 def add_payment():
-    db = pymysql.connect(host="localhost", user="root", password="phunsukwangdoo", database="trafficfine")
+    db = pymysql.connect(host="db", user="root", password="phunsukwangdoo", database="trafficfine")
     cursor = db.cursor()
     if request.method=='POST':
         violation_id=int(request.form["violation_id"])
@@ -152,7 +152,7 @@ def show_image():
     violation_id = request.form['violation_id']
     print(violation_id)
     # Query the database to get the image data
-    connection = pymysql.connect(host="localhost", user="root", password="phunsukwangdoo", database="trafficfine")
+    connection = pymysql.connect(host="db", user="root", password="phunsukwangdoo", database="trafficfine")
     try:
         with connection.cursor() as cursor:
             # Assuming your table is named 'violations' and has columns 'violation_id' and 'violation_img'
