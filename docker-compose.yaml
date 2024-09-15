@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    platform: linux/amd64
+    container_name: traffic_db
+    environment:
+      MYSQL_ROOT_PASSWORD: phunsukwangdoo
+      MYSQL_DATABASE: trafficfine
+    ports:
+      - "3307:3306"
+    volumes:
+      - traffic:/var/lib/mysql
+  app:
+    build: .
+    container_name: flaskapp
+    depends_on:
+      - db
+volumes:
+  traffic:
+    driver: local

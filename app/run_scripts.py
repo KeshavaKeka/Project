@@ -12,10 +12,14 @@ db_config = {
 
 # List of files to execute in order (SQL and Python)
 files_to_execute = [
-    './sql/first_script.sql',
-    './app/third_script.py',
-    './sql/second_script.sql',
-    './app/fourth_script.py',
+    './sql/1.Traffic_fine_Database.sql',
+    './sql/2.Create_roles.sql',
+    './app/3.Insert.py',
+    './sql/4.Insert_Zone_Details.sql',
+    './sql/5.Insert_Foreign_Keys.sql',
+    './sql/6.Create_Triggers.sql',
+    './sql/7.Procedure.sql',
+    './sql/8.Function.sql'
 ]
 
 # Function to execute SQL files
