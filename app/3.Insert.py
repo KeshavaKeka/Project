@@ -4,8 +4,8 @@ import pymysql
 
 db = pymysql.connect(
     host="localhost",
-    user="admin",
-    password="likith",
+    user="root",
+    password="phunsukwangdoo",
     database="trafficfine"
 )
 cursor = db.cursor()
