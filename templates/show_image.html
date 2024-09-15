@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Image Viewer</title>
+
+    <style>
+        body {
+            background-color: #ffffff; /* Light background color */
+            color: #333333; /* Dark text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* 100% of the viewport height */
+            margin: 0;
+        }
+
+        h1 {
+            color: #f42d0f; /* Updated header color for light theme */
+        }
+
+        img {
+            max-width: 100%; /* Make sure the image doesn't exceed its container */
+            border: 1px solid #333333; /* Dark border around the image */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Dark box shadow */
+            margin-bottom: 20px; /* Add some space between the image and the button */
+        }
+
+        button {
+            background-color: #cc1f00; /* Button background color */
+            color: #ffffff; /* Button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #921600; /* Darker background color on hover */
+        }
+
+        a {
+            color: #0077cc; /* Link color */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Violation Image</h1>
+    <img src="data:image/png;base64,{{ image_base64 }}" alt="Violation Image">
+    <br>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

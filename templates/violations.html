@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if violations and violations|length > 0 %}Violations for Vehicle {{ violations[0]['vehicle_no'] }}{% endif %}</title>
+    <style>
+        body {
+            background-color: #FFFFFF; /* White background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #3498db; /* Blue background for h1 element */
+            color: #FFFFFF; /* White text color */
+            padding: 20px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #3498db; /* Blue border for table headers and cells */
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db; /* Blue background for table headers */
+            color: #FFFFFF; /* White text color */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Light gray background for even rows */
+        }
+        img {
+            border: 1px solid #3498db; /* Blue border for images */
+            max-width: 100px;
+        }
+        #button1 {
+            background-color: #3498db; /* Button background color */
+            color: #ffffff; /* Button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Adjust font size if needed */
+        }
+
+        #button1:hover {
+            background-color: #005580; /* Darker background color on hover */
+        }
+
+        /* Styling for button2 */
+        #button2 {
+            background-color: #4caf50; /* Button background color */
+            color: #ffffff; /* Button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Adjust font size if needed */
+        }
+
+        #button2:hover {
+            background-color: #45a049; /* Darker background color on hover */
+        }
+
+    </style>
+</head>
+<body>
+    {% if violations and violations|length > 0 %}
+        <h1>Violations for Vehicle {{ violations[0]['vehicle_no'] }}</h1>
+        <h3 style="color: rgb(47, 255, 75); background-color: black; text-align: center; padding: 10px; display: none;">Payment Successful</h3>
+        <table>
+            <tr>
+                <th>Violation Type</th>
+                <th>Date & Time</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Image</th>
+                <th>Payment</th>
+            </tr>
+            {% for violation in violations %}
+                <tr>
+                    <td>{{ violation['viol_type'] }}</td>
+                    <td>{{ violation['dt_time'] }}</td>
+                    <td>{{ violation['amount'] }}</td>
+                    <td>{{ violation['loc'] }}</td>
+                    <td>
+                        <form id="imageForm" method="POST" action="/show_image">
+                            <input type="hidden" name="violation_id" value="{{ violation['violation_id'] }}">
+                            <input id="button1" type="submit" value="Click to View Violation"></form>
+                        </form>
+                        <!--button id="hmm" href="/fetch">Click here to view image</button-->
+                    </td>
+                    <td>
+                        <form id="paymentForm" method="POST" action="/add_payment">
+                            <!-- Hidden input fields to store data -->
+                            <input type="hidden" name="violation_id" value="{{ violation['violation_id'] }}">
+                            <input type="hidden" name="amount" value="{{ violation['amount'] }}">
+                            <input type="hidden" name="vehi_no" value="{{ violations[0]['vehicle_no'] }}">
+                            <input id="button2"type="submit" onclick="func()" value="Pay Now">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h1>No violations found.</h1>
+        <a href="/"><button>Click to go to main menu</button></a>
+    {% endif %}
+    <br>
+    <a href="/"><button id="button2">Click to go to Home Page</button></a>
+    <script>
+        function func()
+        {
+            document.getElementById("success").style.display='Block'
+            location.reload();
+        }
+    </script>
+</body>
+</html>

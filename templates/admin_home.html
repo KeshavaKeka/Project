@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Query Executor</title>
+
+    <style>
+        body {
+            background-color: #1f1f1f;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #61dafb;
+            text-align: center;
+            margin-bottom: 0; /* Added to remove default margin */
+        }
+
+        h2 {
+            color: #61dafb;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #fb7b61;
+            text-align: center;
+            margin-bottom: 0; /* Added to remove default margin */
+        }
+
+
+        form {
+            text-align: left; /* Align form fields to the left */
+            margin: 20px; /* Add margin for spacing */
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #333;
+            color: #ffffff;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #61dafb;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #reduction, #paidzoneInfo, #pendingzoneInfo{
+            margin: 20px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width:25%
+        }
+
+        #reduction, #paidzoneInfo, #pendingzoneInfo {
+            width: 30%; /* Adjusted width */
+        }
+
+        #container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        th {
+            background-color: #333;
+            color: #61dafb;
+        }
+
+        tr:hover {
+            background-color: #555;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        [data-blink="blink1"] {
+            animation: blink 2s infinite;
+            color: red;
+        }
+
+        [data-blink="blink2"] {
+            animation: blink 2s infinite;
+            color: rgb(0, 255, 51); /* green */
+        }
+        #pieChart{
+            text-align: left; /* Align form fields to the left */
+            margin: 20px; /* Add margin for spacing */
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Note: For use for Administartors of dept. of Cyber-Crime</h1>
+    <h3>Please refer to Notices released on GOV of Karnataka website before taking any actions</h3>
+    <div id="container">
+        <div id="reduction">
+            <h2>Reduce Fine On Zone</h2>
+            <form method="post" action="/reducefine">
+                <label for="zone_no">Zone No:</label>
+                <input type="text" name="zone_no" required>
+                <br>
+                <label for="reduction_factor">Reduction Factor:</label>
+                <input type="text" name="reduction_factor" required>
+                <br>
+                <button type="submit" onclick="func()">Reduce amount on zone</button>
+            </form>
+            <h3 id='hmm' style="display: none;">Fine amount reduced on all violation in the zone</h2>
+        </div>
+
+        <div id="pendingzoneInfo">
+            <h2>Payments pending</h2>
+            <form method="post" action="/pendingzoneinfo">
+                <label for="zone_id">Enter Zone ID:</label>
+                <input type="text" name="zone_id" required>
+                <br>
+                <button type="submit">Get Zone Information</button>
+            </form>
+
+            {% if zone_info_pending %}
+                <h2>Zone Information:</h2>
+                <p><strong>Zone Name:</strong> {{ zone_info_pending[0] }}</p>
+                <p><strong>Zonal Officer:</strong> {{ zone_info_pending[1] }}</p>
+                <p data-blink="blink1"><strong>Total Amount Pending: {{ zone_info_pending[2] }}</strong></p>
+            {% endif %}
+        </div>
+        <div id="paidzoneInfo">
+            <h2>Payments collected</h2>
+            <form method="post" action="/paidzoneinfo">
+                <label for="zone_id">Enter Zone ID:</label>
+                <input type="text" name="zone_id" required>
+                <br>
+                <button type="submit">Get Zone Information</button>
+            </form>
+
+            {% if zone_info_paid %}
+                <h2>Zone Information:</h2>
+                <p><strong>Zone Name:</strong> {{ zone_info_paid[0] }}</p>
+                <p><strong>Zonal Officer:</strong> {{ zone_info_paid[1] }}</p>
+                <p data-blink="blink2"><strong>Total Amount Collected: {{ zone_info_paid[2] }}</strong></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Add the following form to input zone_id and generate pie chart -->
+    <div id="pieChart">
+        <h2>Visualize violations by Zone</h2>
+        <form method="post" action="/pie_chart">
+            <label for="zone_id">Enter Zone ID (0 for Cross State):</label>
+            <input type="text" name="zone_id" required>
+            <br>
+            <button type="submit">Generate Pie Chart</button>
+        </form>
+
+        {% if pie_chart %}
+            <h2>Violations</h2>
+            <img id="pieChart"src="data:image/png;base64,{{ pie_chart }}" alt="Pie Chart">
+        {% endif %}
+    </div>
+
+
+    <form method="post" action="{{ url_for('execute_query_route') }}">
+        <label for="query">Enter SQL Query:</label>
+        <textarea name="query" rows="4" cols="50" required></textarea>
+        <br>
+        <button type="submit">Execute Query</button>
+    </form>
+
+    {% if query %}
+        <h2>Executed Query:</h2>
+        <p>{{ query }}</p>
+
+        {% if result %}
+            <h2>Query Result:</h2>
+            <table border="1">
+                <tr>
+                    {% for column in result[0] %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in result[1:] %} {# Skip the first row #}
+                    <tr>
+                        {% for value in row %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    {% endif %}
+    <script>
+        function func(){
+            document.getElementById('hmm').style.display='Block'
+        }
+    </script>
+</body>
+</html>

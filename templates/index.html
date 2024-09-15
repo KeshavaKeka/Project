@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add and Delete Data</title>
+    <style>
+        html {
+            background-image: url("static/bg.png"); /* Update the path to your background image */
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        /* Style for the body */
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Style for the header */
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+        }
+
+        /* Style for the tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tab {
+            margin: 0 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Style for the form container */
+        form {
+            background-color: #fff;
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style for headings */
+        h1 {
+            color: #333;
+        }
+
+        /* Style for form fields */
+        input{
+            width: 92%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        select{
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+
+
+        /* Style for the submit button */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Style for form labels */
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #login_b {
+            background-color: rgb(13, 204, 13);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border-color: #ff8000;
+            cursor: pointer;
+            }
+        .mc{
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            width: 60%; /* Set the width to half of the screen */
+            left: 20%; /* Center the marquee */
+            transform: translateY(-50%);
+            background-color: #007bff;
+            height: 35px;
+            color: #f4f4f4;
+            justify-content: center;
+            align-items: center;
+            }
+
+        .mt {
+        display: inline-block;
+        text-align: center;
+        animation: marqueeAnimation 10s linear infinite;
+        }
+
+        @keyframes marqueeAnimation {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        #button1 {
+            background-color: #ee520f; /* Button background color */
+            color: #ffffff; /* Button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Adjust font size if needed */
+            width: 92%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #button1:hover {
+            background-color: rgb(244, 108, 81); /* Darker background color on hover */
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+
+    <div class="tabs">
+        <div class="tab" onclick="showAdminForm()">Add violation(For Departmental use)</div>
+        <div class="tab" onclick="showUserForm()">     View Violations</div>
+    </div>
+
+    </header>
+
+    <h4 style="color: rgb(15, 215, 15); display: none;" id="successmessage">Violation added</h4>
+    <h1 id="adminHeading">Dept. of Vehicluar Traffic Control and Regulation, Govt of Karnataka</h1>
+    <h2 id="adminHeading2">User for Police Staff and Department only </h2>
+    <div class="mc" id="notice">
+        <div class="mt" id="notice"><b>Departmental Employee intended to add violations need to login before doing so</b></div>
+    </div>
+    <a href="/login_info"><button id="login_b">Click here to login</button></a>
+    <hr style="width: 10px;">
+    <form id="adminForm" action="/add_data" method="POST" enctype="multipart/form-data">
+        <label for="type">Violation Type:</label>
+        <select type="text" name="type" required>
+            <option value="" disabled selected>Select here</option>
+            <option val="Signal Jump">Signal Jump</option>
+            <option val="Wrong Parking">Wrong Parking</option>
+            <option val="No helmet">No helmet</option>
+            <option val="Triple riding">Triple riding</option>
+            <option val="Using Mobile">Using Mobile</option>
+            <option val="Wrong way driving">Wrong way driving</option>
+            <option val="Reckless Driving">Reckless Driving</option>
+        </select></br>
+        <label for="location">Location:</label>
+        <input type="text" name="location" required><br>
+        <label for="zone_id">Zone:</label>
+        <select type="number" name="zone_id" required>
+            <option value="" disabled selected>Select here</option>
+            <option val="1">1.Bangalore</option>
+            <option val="2">2.Belgavi</option>
+            <option val="3">3.Hubballi-Dharwada</option>
+            <option val="4">4.Shivmogga</option>
+            <option val="4">5.Mangaluru</option>
+            <option val="5">6.Old-Mysuru</option>
+        </select></br>
+        <label for="vehicle_no"> Vehicle Number: </label>
+        <input type="text" name="vehicle_no" required><br>
+        <label for="viol_img">Select an image:</label>
+        <input type="file" id="viol_img" name="viol_img" required>
+        <input id="button1" type="submit" onclick="success()" value="Add Violation">
+        <br>
+    </form>
+    <h3 id="adminHeading">All the fields are Compulsory. (Refresh in case of any errors)</h3>
+    <h1 id="userHeading" style="display: none;">Dept. of Vehicular Traffic Control and Regulation, Govt of Karnataka</h1>
+    <h2 id="userHeading2" style="display:none">Enter all details and press Add Violation</h2>
+
+    <div id= "successbar" style="display: none; justify-content: center; align-items: center; height: 100vh;">
+        <div style="background-color: rgb(9, 156, 53); color: white; padding: 10px;">
+            <strong>Success:</strong> Violation added successfully.
+        </div>
+    </div>
+    
+    
+    <form id="userForm" style="display: none;" action="/search_violations" method="POST">
+        <label for="vehi_no">Enter Vehicle Number:</label>
+        <input type="text" name="vehi_no"><br>
+        <input id="button1" type="submit" value="Submit User Data">
+    </form>
+
+
+    <script>
+        function showAdminForm() {
+            document.getElementById("adminForm").style.display = "block";
+            document.getElementById("userForm").style.display = "none";
+            document.getElementById("adminHeading").style.display = "block";
+            document.getElementById("userHeading").style.display = "none";
+            document.getElementById("adminHeading2").style.display="block";
+            document.getElementById("notice").style.display="block";
+            document.getElementById('login_b').style.display="block"
+            document.getElementById('login_b').style.alignItems="center"
+            document.getElementById('login_b').style.justifyContent="center"
+        }
+
+        function showUserForm() {
+            document.getElementById("adminForm").style.display = "none";
+            document.getElementById("userForm").style.display = "block";
+            document.getElementById("adminHeading").style.display = "none";
+            document.getElementById("userHeading").style.display = "block";
+            document.getElementById("adminHeading2").style.display="none";
+            document.getElementById("userHeading2").style.display="block";
+            document.getElementById("notice").style.display="none";
+            document.getElementById('login_b').style.display="none";
+
+        }
+
+        function success()
+        {
+            document.getElementById("adminForm").style.display = "none";
+            document.getElementById("userForm").style.display = "none";
+            document.getElementById("adminHeading").style.display = "block";
+            document.getElementById("userHeading").style.display = "none";
+            document.getElementById("adminHeading2").style.display="block";
+            document.getElementById('successbar').style.display="flex";
+        }
+    </script>
+
+</body>
+</html>
